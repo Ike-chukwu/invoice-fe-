@@ -1,11 +1,30 @@
 "use client";
 import LoginForm from "@/components/LoginForm";
-import Modal from "@/components/UI/Modal";
-import React, { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const Login = () => {
   const [isAuthModalForLoginFormActive, setisAuthModalForLoginFormActive] =
     useState(true);
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      replace("/");
+    }
+    setIsCheckingAuth(false);
+  }, [pathname]);
+
+  if (isCheckingAuth)
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <p className="text-center text-[15px]">Loading</p>
+      </div>
+    );
 
   return (
     <div

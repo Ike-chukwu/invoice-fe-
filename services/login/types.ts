@@ -4,3 +4,7 @@ export type LoginResponse = {
     refreshToken: string
     userId: string
 }
+
+export interface RefreshTokenResponse {
+  accessToken: string;
+}

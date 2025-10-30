@@ -1,10 +1,10 @@
-import { InvoiceResponse } from "@/services/invoice/types";
+import { Invoice } from "@/services/invoice/types";
 import React from "react";
 import Link from "next/link";
 import { addDays } from "@/helper";
 
 type Prop = {
-  invoice: InvoiceResponse;
+  invoice: Invoice;
 };
 
 const SmallInvoiceCard = ({ invoice }: Prop) => {

@@ -70,10 +70,6 @@ const LoginForm = ({ isModalActive, setIsModalActive }: Props) => {
           <button
             type="submit"
             disabled={isLoading}
-            //   onClick={() => {
-            //     deleteInvoiceHandler(selectedInvoice.id);
-            //     router.push("/");
-            //   }}
             className="text-xs p-4 md:px-6 py-4 capitalize rounded-3xl bg-[#9277FF] font-bold text-white"
           >
             Continue

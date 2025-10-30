@@ -3,8 +3,8 @@ import { create } from "zustand"
 
 type AuthStore = {
     authInfo: {
-        accessToken: string
-        refreshToken: string
+        accessToken: string | undefined
+        refreshToken: string | undefined
         userId: string
     },
     setAuthInfo: (param: { accessToken?: string, refreshToken?: string, userId?: string }) => void
@@ -13,8 +13,8 @@ type AuthStore = {
 
 export const useAuthStore = create<AuthStore>((set) => ({
     authInfo: {
-        accessToken: "",
-        refreshToken: "",
+        accessToken: undefined,
+        refreshToken: undefined,
         userId: "",
     },
     setAuthInfo: (param) => set((state) => {

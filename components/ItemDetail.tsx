@@ -39,7 +39,6 @@ const ItemDetail = ({
           <input
             type="text"
             {...register(`itemsList.${index}.itemName`)}
-            // name={`itemsList.${index}.itemName`}
             className="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
           />
         </div>
@@ -65,7 +64,6 @@ const ItemDetail = ({
           </label>
           <input
             {...register(`itemsList.${index}.itemPrice`)}
-            // name={`itemsList.${index}.itemPrice`}
             type="number"
             className="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
           />

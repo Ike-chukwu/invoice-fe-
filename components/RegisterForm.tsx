@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import InputField from "./UI/Input";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -25,18 +25,10 @@ const RegisterForm = () => {
     onError: () => toast.error("Registration process failed"),
     onSuccess: () => {
       toast.success("User successfuly created!");
-      // push()
     },
   });
   const submitFormHandler = async (values: RegisterPayload) => {
     signup(values);
-    // await fetch("http://localhost:3500/registerUser", {
-    //   method: "post",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(values),
-    // });
   };
 
   return (
@@ -74,18 +66,12 @@ const RegisterForm = () => {
         </div>
         <div className="self-end flex gap-2">
           <button
-            // onClick={() => {
-            //   setIsModalActive(false);
-            // }}
             className="text-xs p-4 md:px-6 py-4  capitalize rounded-3xl text-[#7E88C3] bg-[#f9fafe] hover:bg-[#DFE3FA]"
           >
             Back
           </button>
           <button
             type="submit"
-            // onClick={() => {
-            //   setIsModalActive(false);
-            // }}
             disabled={isLoading}
             className="text-xs p-4 md:px-6 py-4 capitalize rounded-3xl bg-[#9277FF] font-bold text-white"
           >

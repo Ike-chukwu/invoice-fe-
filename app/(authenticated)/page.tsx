@@ -11,14 +11,20 @@ import WithAuth from "@/components/ProtectedRoute";
 import { useCreateInvoice, useGetListOfInvoices } from "@/hooks/useInvoice";
 import { toast } from "sonner";
 import { useNavStore } from "../../stores/nav-store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LargeInvoiceCard from "@/components/InvoiceCards/LargeInvoiceCard";
 import SmallInvoiceCard from "@/components/InvoiceCards/SmallInvoiceCard";
+import { useRouterQuery } from "@/hooks/useRouterQuery";
+import { STATUS, filterTexts, SeachParmas } from "@/constants/index";
 
 const Home = () => {
+  const { changeQuery, getQuery, changeQueries } = useRouterQuery();
   const listOfInvoicesFromStore = useInvoiceStore(
     (state) => state.listOfInvoices
   );
+  const currentFilter = getQuery(SeachParmas.STATUS) || "all";
+  const page = getQuery(SeachParmas.PAGE) || "1";
+  const [showFilters, setShowFilters] = useState(false);
   const isNavActive = useNavStore((state) => state.isNavActive);
   const toggleNav = useNavStore((state) => state.toggleNav);
   const addInvoiceHandlerFromStore = useInvoiceStore(
@@ -29,7 +35,10 @@ const Home = () => {
     isError: isInvoiceError,
     isPending: isIvoiceLoading,
     isSuccess: isInvoiceSuccessful,
-  } = useGetListOfInvoices();
+    totalCount,
+    page: currentPage,
+    pageCount,
+  } = useGetListOfInvoices(currentFilter, page);
 
   const { createInvoice, isError, isPending, isSuccess } = useCreateInvoice({
     onSuccess: () => toast.success("Invoice successfully created"),
@@ -87,40 +96,76 @@ const Home = () => {
     });
   };
 
+  useEffect(() => {
+    changeQueries({ [SeachParmas.STATUS]: "all", page: "1" });
+  }, []);
+
   return (
     <div className="bg-[#F8F8FB] w-full min-h-[100vh] flex justify-center ">
-      <div className="pt-[7.5rem] pb-[4rem] px-4 lg:px-10 lg:py-20 w-full lg:w-[800px] mx-auto flex md:gap-10 flex-col items-start">
+      <div className="pt-[7.5rem] relative pb-[4rem] px-4 lg:px-10 lg:py-20 w-full lg:w-[800px] mx-auto flex md:gap-10 flex-col items-start">
         <div className="flex justify-between items-center w-full">
           <div className="">
             <h1 className="text-[#0C0E16] text-[16px] font-bold md:mb-2 lg:text-3xl capitalize">
               invoices
             </h1>
+            {/* //you can add a small spinner here */}
             <span className="text-xs text-[#8F95B2]">
-              {listOfInvoicesFromStore.length} total invoices
+              {invoices?.length} total invoices
             </span>
           </div>
 
           <div className="flex gap-10 md:gap-16 items-center">
             <div className="relative">
-              <div className="flex gap-2 items-center">
+              <div
+                className="flex gap-2 items-center cursor-pointer"
+                onClick={() => setShowFilters((showFilters) => !showFilters)}
+              >
                 <span className="text-xs font-bold text-[#0C0E16]">
                   Filter <span className="hidden md:inline">by status</span>
                 </span>
                 <ArrowDownIcon />
               </div>
-              <div className="hidden absolute top-[150%] left-[-20px] right-0 w-[150px] p-4 bg-white rounded-sm">
-                <div className="flex items-center gap-3 mb-3">
-                  <input type="checkbox" />
-                  <span className="capitalize text-xs">draft</span>
+              <div
+                className={`absolute top-[150%] flex flex-col gap-3 left-[-20px] py-5 right-0 w-[170px] p-4 bg-white rounded-[15px] shadow-xl ${
+                  showFilters ? "block" : "hidden"
+                } shadow-lg`}
+              >
+                {filterTexts.map((filter) => (
+                  <div className="flex items-center w-full">
+                    <input
+                      name={filter.title}
+                      id={filter.title}
+                      type="checkbox"
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          changeQueries({ [SeachParmas.STATUS]: filter.title });
+                        } else {
+                          changeQueries({ [SeachParmas.STATUS]: "all" });
+                        }
+                      }}
+                      className="accent-[#9277FF] cursor-pointer"
+                      checked={currentFilter === filter.title}
+                    />
+                    <label
+                      htmlFor={filter.title}
+                      className="capitalize text-[15px] font-bold ml-3 cursor-pointer"
+                    >
+                      {filter.title}
+                    </label>
+                  </div>
+                ))}
+                {/* <div className="flex items-center gap-3 mb-3 cursor-pointer">
+                  <input type="checkbox" name="pending" id="pending" />
+                  <label htmlFor="pending" className="capitalize text-xs">
+                    pending
+                  </label>
                 </div>
-                <div className="flex items-center gap-3 mb-3">
-                  <input type="checkbox" />
-                  <span className="capitalize text-xs">pending</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <input type="checkbox" />
-                  <span className="capitalize text-xs">paid</span>
-                </div>
+                <div className="flex items-center gap-3 cursor-pointer">
+                  <input name="paid" id="paid" type="checkbox" />
+                  <label htmlFor="paid" className="capitalize text-xs">
+                    paid
+                  </label>
+                </div> */}
               </div>
             </div>
             <button
@@ -171,6 +216,25 @@ const Home = () => {
             </>
           )}
         </div>
+        {/* //do it in such a way thaat the filter modal dissapears when the body of the html is cliked */}
+        {/* //solve the btn css issue for mobile and desktop view */}
+        {/* //grey past dates out */}
+        {Number(page) > 1 && (
+          <button
+            onClick={() => changeQuery(SeachParmas.PAGE, Number(page) - 1 + "")}
+            className="text-[16px] bottom-10 bg-[#9277FF] px-4 py-2 capitalize rounded-full text-white absolute left-6 lg:left-[40px]"
+          >
+            previous
+          </button>
+        )}
+        {!!pageCount && pageCount > Number(page) && (
+          <button
+            onClick={() => changeQuery(SeachParmas.PAGE, Number(page) + 1 + "")}
+            className="text-[16px] bottom-10 bg-[#9277FF] px-4 py-2 capitalize rounded-full text-white absolute right-6 lg:right-[40px]"
+          >
+            Next
+          </button>
+        )}
       </div>
       <div
         className={

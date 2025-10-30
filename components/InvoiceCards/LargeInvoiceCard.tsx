@@ -1,11 +1,11 @@
-import { InvoiceResponse } from "@/services/invoice/types";
+import { Invoice } from "@/services/invoice/types";
 import React from "react";
 import Link from "next/link";
 import { addDays } from "@/helper";
 import { ArrowRightIcon } from "../icons";
 
 type Prop = {
-  invoice: InvoiceResponse;
+  invoice: Invoice;
 };
 
 const LargeInvoiceCard = ({ invoice }: Prop) => {
@@ -13,7 +13,7 @@ const LargeInvoiceCard = ({ invoice }: Prop) => {
     <Link href={`/invoices/${invoice?._id}`} key={invoice?._id}>
       <div className="hidden py-6 rounded-md bg-white px-6 md:flex justify-between items-center w-full">
         <div className="flex gap-7 items-center">
-          <span className="text-[#0C0E16] text-[14px] font-bold">
+          <span className="text-[#0C0E16] w-[70px] text-[14px] font-bold">
             <span className="text-[#7E88C3] font-normal">
               {invoice?.code?.slice(0, 1)}
             </span>
