@@ -39,7 +39,7 @@ const InvoiceDetailHeader = ({ id, invoice }: Props) => {
           Export as PDF
         </button>
       )}
-      {invoice?.status === "pending" && (
+      {/* {invoice?.status === "pending" && (
         <button
           disabled={isSendingMail}
           onClick={sendViaEmail}
@@ -50,7 +50,7 @@ const InvoiceDetailHeader = ({ id, invoice }: Props) => {
         >
           {isSendingMail ? "Sending..." : "Send via Email"}
         </button>
-      )}
+      )} */}
     </div>
   );
 };
