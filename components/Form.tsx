@@ -1,15 +1,13 @@
 import { invoicePayload, invoiceSchema } from "@/types/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { useEffect } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import InputField from "./UI/Input";
 import SelectField from "./UI/Select";
 import ItemDetail from "./ItemDetail";
 import { listOfCountries, paymentMethods } from "@/constants";
 import { v4 as uuidv4 } from "uuid";
-// import { Invoice, useInvoiceStore, useNavStore } from "@/app/stores/store";
 import { addDays, generateCode } from "@/helper";
-import { useInvoiceStore } from "@/stores/invoice-store";
 import { useNavStore } from "@/stores/nav-store";
 import { useCreateInvoice } from "@/hooks/useInvoice";
 import { toast } from "sonner";
@@ -19,14 +17,7 @@ type FormProps = {
   submitFormHandler: (invoice: invoicePayload) => void;
 };
 
-const Form = ({
-  // isNavActive,
-  // toggleNav,
-  // listOfFormData,
-  // setListOfFormData,
-  invoice,
-  submitFormHandler,
-}: FormProps) => {
+const Form = ({ invoice, submitFormHandler }: FormProps) => {
   const methods = useForm({
     resolver: yupResolver(invoiceSchema),
     mode: "all",
@@ -35,13 +26,13 @@ const Form = ({
       cityOfClient: "",
       clientEmail: "",
       clientName: "",
-      countryOfBusinessOwner: undefined,
-      countryOfClient: undefined,
+      countryOfBusinessOwner: "",
+      countryOfClient: "",
       invoiceDate: "",
       itemsList: [],
-      paymentTerms: undefined,
+      paymentTerms: "",
       postCodeOfBusinessOwner: "",
-      postCodeOfOfClient: "",
+      postCodeOfClient: "",
       projectDescription: "",
       streetAddressOfBusinessOwner: "",
       streetAddressOfClient: "",
@@ -58,7 +49,8 @@ const Form = ({
     name: "itemsList",
   });
 
-  const { createInvoice, isError, isPending, isSuccess } = useCreateInvoice({
+  const itemsListArr = watch("itemsList");
+  const { createInvoice } = useCreateInvoice({
     onSuccess: () => toast.success("Invoice successfully created"),
     onError: () => toast.error("Invoice cannot be created"),
   });
@@ -76,7 +68,7 @@ const Form = ({
     });
     let dueDate;
     const selectedPaymentTerm = values.paymentTerms;
-    dueDate = addDays(values.invoiceDate, selectedPaymentTerm);
+    dueDate = addDays(values.invoiceDate, parseInt(selectedPaymentTerm));
     if (dueDate) {
       const date = new Date(dueDate);
 
@@ -234,8 +226,8 @@ const Form = ({
               <div className="flex flex-col gap-2 w-[25%]">
                 <InputField
                   label="post code"
-                  name="postCodeOfOfClient"
-                  error={methods.formState.errors.postCodeOfOfClient?.message}
+                  name="postCodeOfClient"
+                  error={methods.formState.errors.postCodeOfClient?.message}
                   inputClassName="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
                   labelClassName="text-[11px] font-bold capitalize text-[#8A91C5]"
                   type="text"
@@ -303,6 +295,7 @@ const Form = ({
                 />
               ))}
               <button
+                type="button"
                 onClick={() => {
                   appendItem({
                     itemName: "",
@@ -310,7 +303,7 @@ const Form = ({
                     itemQuantity: 0,
                   });
                 }}
-                className="w-full py-3 font-bold rounded-3xl bg-[#f9fafe] text-[#7E88C3] text-[12px]"
+                className="w-full py-3 hover:opacity-80 font-bold rounded-3xl bg-[#f9fafe] text-[#7E88C3] text-[12px]"
               >
                 + Add new item
               </button>
@@ -325,9 +318,10 @@ const Form = ({
               <button
                 onClick={(e) => {
                   e.preventDefault();
+                  methods.reset();
                   toggleNav();
                 }}
-                className="text-[11px] self-start  p-4  capitalize rounded-3xl text-[#7E88C3] bg-[#f9fafe]"
+                className="text-[11px] hover:opacity-80 self-start  p-4  capitalize rounded-3xl text-[#7E88C3] bg-[#f9fafe]"
               >
                 discard
               </button>
@@ -337,26 +331,27 @@ const Form = ({
                 <button
                   onClick={methods.handleSubmit(saveAsDraftHandler)}
                   type="submit"
-                  className="text-[11px] p-4 capitalize rounded-3xl bg-[#0C0E16] font-bold text-white"
+                  className="text-[11px] hover:opacity-80 p-4 capitalize rounded-3xl bg-[#0C0E16] font-bold text-white"
                 >
                   save as draft
                 </button>
               )}
               {invoice && (
                 <button
-                  // onClick={methods.handleSubmit(saveAsDraftHandler)}
                   type="submit"
-                  className="text-[11px] p-4 capitalize rounded-3xl bg-[#f9fafe] font-bold text-[#7E88C3]"
+                  className="text-[11px] p-4 hover:opacity-80 capitalize rounded-3xl bg-[#f9fafe] font-bold text-[#7E88C3]"
                 >
                   cancel
                 </button>
               )}
-              <button
-                type="submit"
-                className="text-[11px] capitalize  p-4 rounded-3xl font-bold bg-[#9277FF] text-white"
-              >
-                save and send
-              </button>
+              {itemsListArr?.length !== 0 && (
+                <button
+                  type="submit"
+                  className="text-[11px] capitalize hover:opacity-80  p-4 rounded-3xl font-bold bg-[#9277FF] text-white"
+                >
+                  save and send
+                </button>
+              )}
             </div>
           </div>
         </form>

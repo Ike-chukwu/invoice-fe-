@@ -8,6 +8,7 @@ type Props = {
   label: string;
   labelClassName?: string;
   error?: string;
+  placeholder?: string;
   name: string;
 };
 
@@ -18,6 +19,7 @@ const InputField = ({
   labelClassName,
   type,
   name,
+  placeholder,
 }: Props) => {
   const {
     register,
@@ -35,6 +37,10 @@ const InputField = ({
         render={({ field: { onChange, value } }) => (
           <input
             type={type}
+            {...(type === "date" && {
+              min: new Date().toISOString().split("T")[0],
+            })}
+            placeholder={placeholder}
             className={cn(
               inputClassName,
               error ? "border border-red-500" : null

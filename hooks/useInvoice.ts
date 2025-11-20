@@ -1,5 +1,6 @@
 import { InvoiceService } from "@/services/invoice";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { send } from "process";
 
 export const useCreateInvoice = ({
   onSuccess,
@@ -155,5 +156,33 @@ export const useDeleteInvoice = ({
     isError,
     isPending,
     isSuccess,
+  };
+};
+
+export const useSendInvoiceViaEmail = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void;
+  onError: () => void;
+}) => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: (variables: {
+      invoiceId: string;
+      clientEmail: string;
+      // businessEmail: string;
+    }) => InvoiceService.sendInvoiceViaEmail(variables),
+    mutationKey: ["sendInvoiceViaEmail"],
+    onSuccess: () => {
+      onSuccess?.();
+    },
+    onError: () => {
+      onError?.();
+    },
+  });
+
+  return {
+    sendMail: mutate,
+    isPending,
   };
 };

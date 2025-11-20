@@ -17,7 +17,7 @@ export type Invoice = {
     clientEmail: string;
     streetAddressOfClient: string;
     cityOfClient: string;
-    postCodeOfOfClient: string;
+    postCodeOfClient: string;
     countryOfClient: number;
     invoiceDate: string;
     paymentTerms: number;

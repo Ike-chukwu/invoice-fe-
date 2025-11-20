@@ -13,7 +13,7 @@ type Props = {
         itemPrice: number;
       }>
     | any;
-  watch: (fieldName: string) => void;
+  watch: <T = any>(fieldName: string) => T;
 };
 
 const ItemDetail = ({
@@ -52,6 +52,7 @@ const ItemDetail = ({
           <input
             {...register(`itemsList.${index}.itemQuantity`)}
             type="number"
+            min={0}
             className="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
           />
         </div>
@@ -64,6 +65,7 @@ const ItemDetail = ({
           </label>
           <input
             {...register(`itemsList.${index}.itemPrice`)}
+            min={0}
             type="number"
             className="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
           />
@@ -77,7 +79,7 @@ const ItemDetail = ({
           </label>
           <p className="text-[12px]">
             {" "}
-            {(watchedPrice ?? 0 )* (watchedQuantity ?? 0)}
+            {(watchedPrice ?? 0) * (watchedQuantity ?? 0)}
           </p>
         </div>
       </div>

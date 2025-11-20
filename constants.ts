@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getAccessToken, getRefreshToken } from "./stores/auth-store";
 import { RefreshTokenResponse } from "./services/login/types";
 
 export const listOfCountries = [
@@ -253,10 +252,7 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export const refreshAccessToken = async (
-  refreshToken: string
-  //   accessToken: string
-) => {
+export const refreshAccessToken = async (refreshToken: string) => {
   return await fetch(`${API_URL_V1}/refresh`, {
     method: "POST",
     headers: {
@@ -274,36 +270,5 @@ export const refreshAccessToken = async (
 export const logout = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
+  localStorage.removeItem("email");
 };
-
-const lettersOfAlphabets = [
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-  "I",
-  "J",
-  "K",
-  "L",
-  "M",
-  "N",
-  "O",
-  "P",
-  "Q",
-  "R",
-  "S",
-  "T",
-  "U",
-  "V",
-  "W",
-  "X",
-  "Y",
-  "Z",
-];
-const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNodWtzQGdtYWlsLmNvbSIsImlhdCI6MTc2MTMzNjcwOCwiZXhwIjoxNzYxMzM3MDA4fQ.Au-kkRxxwYaqUii-bbGSGsIYKCuRRc2_p1HEGmvnOy0

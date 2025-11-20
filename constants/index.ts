@@ -4,7 +4,7 @@ export enum STATUS {
   paid = "paid",
 }
 
-export enum SeachParmas {
+export enum SeachParams {
   STATUS = "status",
   PAGE = "page",
 }

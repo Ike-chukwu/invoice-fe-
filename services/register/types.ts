@@ -17,7 +17,7 @@ export type RegisterResponse = {
         clientEmail: string;
         streetAddressOfClient: string;
         cityOfClient: string;
-        postCodeOfOfClient: string;
+        postCodeOfClient: string;
         countryOfClient: string;
         invoiceDate: string;
         paymentTerms: string;

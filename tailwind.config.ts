@@ -14,8 +14,11 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       backgroundColor: {
-        "overlay-color": "rgba(124, 124, 125, 0.5)"
-      }
+        "overlay-color": "rgba(124, 124, 125, 0.5)",
+      },
+      fontFamily: {
+        sans: ["var(--font-poppins)", "sans-serif"],
+      },
     },
   },
   plugins: [],

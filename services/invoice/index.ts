@@ -33,4 +33,11 @@ export class InvoiceService {
   public static deleteInvoice(id: string) {
     return axiosInstance.delete(this.INVOICE_URL, { params: { id } });
   }
+
+  public static sendInvoiceViaEmail(payload: {
+    invoiceId: string;
+    clientEmail: string;
+  }) {
+    return axiosInstance.post("/sendEmail", payload);
+  }
 }

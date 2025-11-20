@@ -19,14 +19,12 @@ export const useRegister = ({
     mutationKey: ["signup"],
     onSuccess: (data) => {
       if (typeof data === "object") {
-        console.log(data);
         onSuccess?.();
         push("/login");
       }
     },
     onError: () => {
       onError?.();
-      // console.log('error occured')
     },
   });
   return {

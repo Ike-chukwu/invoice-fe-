@@ -19,14 +19,9 @@ export const useLogin = ({
     mutationKey: ["login"],
     onSuccess: (data) => {
       if (typeof data === "object") {
-        console.log(data.data);
-        setAuthInfo({
-          accessToken: data.data.data.accessToken,
-          refreshToken: data.data.data.refreshToken,
-          // userId: data.data.userId,
-        });
         localStorage.setItem("accessToken", data.data.data.accessToken);
         localStorage.setItem("refreshToken", data.data.data.refreshToken);
+        localStorage.setItem("email", data.data.data.email);
         onSuccess?.();
         push("/");
       }

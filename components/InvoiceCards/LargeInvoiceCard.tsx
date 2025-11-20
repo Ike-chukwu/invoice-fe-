@@ -11,7 +11,7 @@ type Prop = {
 const LargeInvoiceCard = ({ invoice }: Prop) => {
   return (
     <Link href={`/invoices/${invoice?._id}`} key={invoice?._id}>
-      <div className="hidden py-6 rounded-md bg-white px-6 md:flex justify-between items-center w-full">
+      <div className="hidden hover:shadow-lg py-6 rounded-md bg-white px-6 md:flex justify-between items-center w-full">
         <div className="flex gap-7 items-center">
           <span className="text-[#0C0E16] w-[70px] text-[14px] font-bold">
             <span className="text-[#7E88C3] font-normal">

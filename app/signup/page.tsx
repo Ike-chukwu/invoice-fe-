@@ -1,17 +1,27 @@
 "use client";
-import LoginForm from "@/components/LoginForm";
+import Loader from "@/components/Loader";
 import RegisterForm from "@/components/RegisterForm";
-import Modal from "@/components/UI/Modal";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const Signup = () => {
-  const [isAuthModalForSignupFormActive, setisAuthModalForSignupFormActive] =
-    useState(true);
+  const [isChecking, setIsChecking] = useState(true);
+  const { replace } = useRouter();
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      replace("/");
+    } else {
+      setIsChecking(false);
+    }
+  }, []);
+
+  if (isChecking) return <Loader />;
   return (
     <div
       className={
-        "transition-colors duration-300 bg-overlay-color fixed inset-0 min-h-[100vh] w-full z-20  flex items-center justify-center"
+        "w-full h-screen flex items-center justify-center"
       }
     >
       <RegisterForm />
