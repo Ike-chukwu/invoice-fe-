@@ -36,12 +36,14 @@ const InvoiceActionsButtonGroupMobile = ({
   return (
     <div className="absolute md:hidden bottom-0 bg-white rounded-lg py-6 px-4 md:px-6 w-full flex justify-between items-center">
       <div className="w-full md:w-auto justify-between md:justify-normal flex gap-2 items-center">
-        <button
-          onClick={toggleNav}
-          className="text-xs p-4 md:px-6 py-4  capitalize rounded-3xl text-[#7E88C3] bg-[#DFE3FA]"
-        >
-          edit
-        </button>
+        {invoice?.status !== "paid" && (
+          <button
+            onClick={toggleNav}
+            className="text-xs p-4 md:px-6 py-4  capitalize rounded-3xl text-[#7E88C3] bg-[#DFE3FA]"
+          >
+            edit
+          </button>
+        )}
         <button
           onClick={() => {
             setIsDeleteModalActive(true);

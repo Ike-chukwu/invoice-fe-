@@ -31,14 +31,13 @@ const InvoiceDetailHeader = ({ id, invoice }: Props) => {
         <ArrowLeftIcon />
         <span className="text-[14px] font-bold">Go back</span>
       </Link>
-      {invoice?.status !== "draft" && (
-        <button
-          onClick={() => generatePDF("invoice")}
-          className="block md:hidden hover:opacity-80 text-xs p-4 md:px-6 py-4 capitalize rounded-3xl bg-amber-500 text-white font-bold"
-        >
-          Export as PDF
-        </button>
-      )}
+      <button
+        onClick={() => generatePDF("invoice")}
+        className="block md:hidden hover:opacity-80 text-xs p-4 md:px-6 py-4 capitalize rounded-3xl bg-amber-500 text-white font-bold"
+      >
+        Export as PDF
+      </button>
+
       {/* {invoice?.status === "pending" && (
         <button
           disabled={isSendingMail}

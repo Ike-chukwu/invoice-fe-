@@ -36,12 +36,14 @@ const InvoiceActionsButtonGroupDesktop = ({
   };
   return (
     <div className="hidden md:flex gap-2 items-center">
-      <button
-        onClick={toggleNav}
-        className="text-xs p-4 md:px-6 py-4 hover:opacity-80  capitalize rounded-3xl text-[#7E88C3] bg-[#DFE3FA]"
-      >
-        edit
-      </button>
+      {invoice?.status !== "paid" && (
+        <button
+          onClick={toggleNav}
+          className="text-xs p-4 md:px-6 py-4 hover:opacity-80  capitalize rounded-3xl text-[#7E88C3] bg-[#DFE3FA]"
+        >
+          edit
+        </button>
+      )}
       <button
         onClick={() => {
           setIsDeleteModalActive(true);
@@ -60,14 +62,12 @@ const InvoiceActionsButtonGroupDesktop = ({
       >
         {isChangingInvoiceStatus ? "Please wait..." : " Mark as Paid"}
       </button>
-      {invoice?.status !== "draft" && (
-        <button
-          onClick={() => generatePDF("invoice")}
-          className="text-xs p-4 md:px-6 py-4 capitalize hover:opacity-80 rounded-3xl bg-amber-500 text-white font-bold"
-        >
-          Export as PDF
-        </button>
-      )}
+      <button
+        onClick={() => generatePDF("invoice")}
+        className="text-xs p-4 md:px-6 py-4 capitalize hover:opacity-80 rounded-3xl bg-amber-500 text-white font-bold"
+      >
+        Export as PDF
+      </button>
     </div>
   );
 };
