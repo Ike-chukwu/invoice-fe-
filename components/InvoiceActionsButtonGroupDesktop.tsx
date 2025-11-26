@@ -36,10 +36,10 @@ const InvoiceActionsButtonGroupDesktop = ({
   };
   return (
     <div className="hidden md:flex gap-2 items-center">
-      {invoice?.status !== "paid" && (
+      {invoice?.status == "draft" && (
         <button
           onClick={toggleNav}
-          className="text-xs p-4 md:px-6 py-4 hover:opacity-80  capitalize rounded-3xl text-[#7E88C3] bg-[#DFE3FA]"
+          className="text-xs p-4 md:px-6 py-4 hover:opacity-80  capitalize rounded-3xl text-white  bg-[#8899F3]"
         >
           edit
         </button>
@@ -52,16 +52,18 @@ const InvoiceActionsButtonGroupDesktop = ({
       >
         delete
       </button>
-      <button
-        className={
-          "text-xs p-4 md:px-6 py-4 bg-[#7c5dfa] hover:opacity-80 rounded-3xl font-bold text-white " +
-          (invoice?.status == "paid" ? "opacity-45" : "opacity-100")
-        }
-        onClick={changeStatusHandler}
-        disabled={invoice?.status == "paid" || isInvoiceStatusChangeSuccess}
-      >
-        {isChangingInvoiceStatus ? "Please wait..." : " Mark as Paid"}
-      </button>
+      {invoice?.status !== "paid" && (
+        <button
+          className={
+            "text-xs p-4 md:px-6 py-4 bg-[#7c5dfa] hover:opacity-80 rounded-3xl font-bold text-white " +
+            (invoice?.status == "paid" ? "opacity-45" : "opacity-100")
+          }
+          onClick={changeStatusHandler}
+          disabled={invoice?.status == "paid" || isInvoiceStatusChangeSuccess}
+        >
+          {isChangingInvoiceStatus ? "Please wait..." : " Mark as Paid"}
+        </button>
+      )}
       <button
         onClick={() => generatePDF("invoice")}
         className="text-xs p-4 md:px-6 py-4 capitalize hover:opacity-80 rounded-3xl bg-amber-500 text-white font-bold"

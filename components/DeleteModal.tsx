@@ -39,7 +39,7 @@ const DeleteInvoiceModal = ({
           onClick={() => {
             setIsDeleteModalActive(false);
           }}
-          className="text-xs p-4 md:px-6 py-4  capitalize rounded-3xl text-[#7E88C3] bg-[#f9fafe] hover:bg-[#DFE3FA]"
+          className="text-xs p-4 md:px-6 py-4  capitalize rounded-3xl text-[#7E88C3] bg-[#f9fafe] hover:bg-[#8899F3]"
         >
           cancel
         </button>

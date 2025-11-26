@@ -36,10 +36,10 @@ const InvoiceActionsButtonGroupMobile = ({
   return (
     <div className="absolute md:hidden bottom-0 bg-white rounded-lg py-6 px-4 md:px-6 w-full flex justify-between items-center">
       <div className="w-full md:w-auto justify-between md:justify-normal flex gap-2 items-center">
-        {invoice?.status !== "paid" && (
+        {invoice?.status == "draft" && (
           <button
             onClick={toggleNav}
-            className="text-xs p-4 md:px-6 py-4  capitalize rounded-3xl text-[#7E88C3] bg-[#DFE3FA]"
+            className="text-xs p-4 md:px-6 py-4  capitalize rounded-3xl text-white bg-[#8899F3]"
           >
             edit
           </button>
@@ -52,16 +52,18 @@ const InvoiceActionsButtonGroupMobile = ({
         >
           delete
         </button>
-        <button
-          onClick={changeStatusHandler}
-          disabled={invoice?.status == "paid" || isInvoiceStatusChangeSuccess}
-          className={
-            "text-xs p-4 md:px-6 py-4 rounded-3xl font-bold bg-[#7c5dfa] text-white " +
-            (invoice?.status == "paid" ? "opacity-50" : "opacity-100")
-          }
-        >
-          {isChangingInvoiceStatus ? "Please wait..." : " Mark as Paid"}
-        </button>
+        {invoice?.status !== "paid" && (
+          <button
+            onClick={changeStatusHandler}
+            disabled={invoice?.status == "paid" || isInvoiceStatusChangeSuccess}
+            className={
+              "text-xs p-4 md:px-6 py-4 rounded-3xl font-bold bg-[#7c5dfa] text-white " +
+              (invoice?.status == "paid" ? "opacity-50" : "opacity-100")
+            }
+          >
+            {isChangingInvoiceStatus ? "Please wait..." : " Mark as Paid"}
+          </button>
+        )}
       </div>
     </div>
   );
