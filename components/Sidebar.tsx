@@ -43,7 +43,10 @@ const Sidebar = () => {
         )}
         <div className="lg:hidden w-full border-l-2 border-l-[#494E6E] pl-4 lg:pl-0   h-full lg:h-auto items-center  flex lg:pt-5 justify-center lg:border-t-2 lg:border-t-[#494E6E] ">
           <div className="block lg:hidden">
-            <LogOutIcon className="text-[#7C5DFA] w-7 cursor-pointer hover:opacity-70" />
+            <LogOutIcon
+              onClick={logout}
+              className="text-[#7C5DFA] w-7 cursor-pointer hover:opacity-70"
+            />
           </div>
         </div>
       </div>
