@@ -274,7 +274,7 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                 label="project description"
                 name="projectDescription"
                 error={methods.formState.errors.projectDescription?.message}
-                inputClassName="px-4 py-4 border-[0.1px] text-[10px]  border-[#DFE3FA]"
+                inputClassName="px-4 py-4 border-[0.1px] text-[10px] md:text-[14px]  border-[#DFE3FA]"
                 labelClassName="text-[12px] font-bold capitalize text-[#8A91C5] mb-2"
               />
             </div>

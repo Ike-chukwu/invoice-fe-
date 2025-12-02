@@ -33,7 +33,7 @@ export const ReactQueryProvider = ({ children }: { children: ReactNode }) => {
 export function Providers({ children }: ProviderProps) {
   return (
     <ReactQueryProvider>
-      <Toaster richColors />
+      <Toaster richColors position="top-center" />
       {children}
     </ReactQueryProvider>
   );
