@@ -11,6 +11,7 @@ import { addDays, generateCode } from "@/helper";
 import { useNavStore } from "@/stores/nav-store";
 import { useCreateInvoice } from "@/hooks/useInvoice";
 import { toast } from "sonner";
+import TextAreaField from "./UI/TextArea";
 
 type FormProps = {
   invoice?: any;
@@ -130,12 +131,12 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
               <InputField
                 name="streetAddressOfBusinessOwner"
                 label="street address"
-                labelClassName="text-[11px] font-bold capitalize text-[#8A91C5] mb-2"
+                labelClassName="text-[12px] font-bold capitalize text-[#8A91C5] mb-2"
                 error={
                   methods.formState.errors.streetAddressOfBusinessOwner?.message
                 }
                 type="text"
-                inputClassName="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] "
+                inputClassName="px-4 py-4 border-[0.1px] text-[10px] md:text-[14px] border-[#DFE3FA] "
               />
             </div>
 
@@ -145,9 +146,9 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                   label="city"
                   name="cityOfBusinessOwner"
                   error={methods.formState.errors.cityOfBusinessOwner?.message}
-                  inputClassName="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
+                  inputClassName="px-4 py-4 border-[0.1px] text-[10px] md:text-[14px] border-[#DFE3FA] w-full"
                   type="text"
-                  labelClassName="text-[11px] font-bold capitalize text-[#8A91C5]"
+                  labelClassName="text-[12px] font-bold capitalize text-[#8A91C5]"
                 />
               </div>
               <div className="flex flex-col gap-2 w-[25%]">
@@ -157,8 +158,8 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                   error={
                     methods.formState.errors.postCodeOfBusinessOwner?.message
                   }
-                  inputClassName="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
-                  labelClassName="text-[11px] font-bold capitalize text-[#8A91C5]"
+                  inputClassName="px-4 py-4 border-[0.1px] text-[10px] md:text-[14px] border-[#DFE3FA] w-full"
+                  labelClassName="text-[12px] font-bold capitalize text-[#8A91C5]"
                   type="text"
                 />
               </div>
@@ -170,8 +171,8 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                   options={listOfCountries}
                   name="countryOfBusinessOwner"
                   label="country"
-                  labelClassName="text-[11px]  font-bold capitalize text-[#8A91C5]"
-                  selectClassName="px-4 text-[10px] outline-none py-4 border-[0.1px] border-[#DFE3FA] w-full"
+                  labelClassName="text-[12px] font-bold capitalize text-[#8A91C5]"
+                  selectClassName="px-4 text-[10px] md:text-[14px] outline-none py-4 border-[0.1px] border-[#DFE3FA] w-full"
                 />
               </div>
             </div>
@@ -186,8 +187,8 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                 label="client's name"
                 name="clientName"
                 error={methods.formState.errors.clientName?.message}
-                inputClassName="px-4 py-4 border-[0.1px] text-[10px]  border-[#DFE3FA] "
-                labelClassName="text-[11px] font-bold capitalize text-[#8A91C5] mb-2"
+                inputClassName="px-4 py-4 border-[0.1px] text-[10px] md:text-[14px]  border-[#DFE3FA] "
+                labelClassName="text-[12px] font-bold capitalize text-[#8A91C5] mb-2"
                 type="text"
               />
             </div>
@@ -196,9 +197,9 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                 label=" client's email"
                 name="clientEmail"
                 error={methods.formState.errors.clientEmail?.message}
-                labelClassName="text-[11px] font-bold capitalize text-[#8A91C5] mb-2"
+                labelClassName="text-[12px] font-bold capitalize text-[#8A91C5] mb-2"
                 type="email"
-                inputClassName="px-4 py-4 border-[0.1px] text-[10px]  border-[#DFE3FA]"
+                inputClassName="px-4 py-4 border-[0.1px] text-[10px] md:text-[14px]  border-[#DFE3FA]"
               />
             </div>
             <div className=" flex flex-col w-full ">
@@ -207,8 +208,8 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                 name="streetAddressOfClient"
                 error={methods.formState.errors.streetAddressOfClient?.message}
                 type="text"
-                labelClassName="text-[11px] font-bold capitalize text-[#8A91C5] mb-2"
-                inputClassName="px-4 py-4 border-[0.1px] text-[10px]  border-[#DFE3FA]"
+                labelClassName="text-[12px] font-bold capitalize text-[#8A91C5] mb-2"
+                inputClassName="px-4 py-4 border-[0.1px] text-[10px] md:text-[14px]  border-[#DFE3FA]"
               />
             </div>
 
@@ -218,8 +219,8 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                   label="city"
                   name="cityOfClient"
                   error={methods.formState.errors.cityOfClient?.message}
-                  inputClassName="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
-                  labelClassName="text-[11px] font-bold capitalize text-[#8A91C5]"
+                  inputClassName="px-4 py-4 border-[0.1px] text-[10px] md:text-[14px] border-[#DFE3FA] w-full"
+                  labelClassName="text-[12px] font-bold capitalize text-[#8A91C5]"
                   type="text"
                 />
               </div>
@@ -228,8 +229,8 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                   label="post code"
                   name="postCodeOfClient"
                   error={methods.formState.errors.postCodeOfClient?.message}
-                  inputClassName="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
-                  labelClassName="text-[11px] font-bold capitalize text-[#8A91C5]"
+                  inputClassName="px-4 py-4 border-[0.1px] text-[10px] md:text-[14px] border-[#DFE3FA] w-full"
+                  labelClassName="text-[12px] font-bold capitalize text-[#8A91C5]"
                   type="text"
                 />
               </div>
@@ -239,8 +240,8 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                   options={listOfCountries}
                   name="countryOfClient"
                   label="country"
-                  labelClassName="text-[11px] font-bold capitalize text-[#8A91C5]"
-                  selectClassName="px-4 text-[10px] py-4 border-[0.1px] border-[#DFE3FA] w-full"
+                  labelClassName="text-[12px] font-bold capitalize text-[#8A91C5]"
+                  selectClassName="px-4 text-[10px] md:text-[14px] py-4 border-[0.1px] border-[#DFE3FA] w-full"
                 />
               </div>
             </div>
@@ -251,8 +252,8 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                   label="Invoice Date"
                   name="invoiceDate"
                   error={methods.formState.errors.invoiceDate?.message}
-                  inputClassName="px-4 text-[10px] py-4 border-[0.1px] border-[#DFE3FA] w-full"
-                  labelClassName="text-[11px] font-bold capitalize text-[#8A91C5]"
+                  inputClassName="px-4 text-[10px] md:text-[14px] py-4 border-[0.1px] border-[#DFE3FA] w-full"
+                  labelClassName="text-[12px] font-bold capitalize text-[#8A91C5]"
                   type="date"
                 />
               </div>
@@ -262,20 +263,19 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                   label="payment terms"
                   name="paymentTerms"
                   options={paymentMethods}
-                  selectClassName="px-4 text-[10px] py-4 border-[0.1px] border-[#DFE3FA] w-full"
-                  labelClassName="text-[11px] font-bold capitalize text-[#8A91C5]"
+                  selectClassName="px-4 text-[10px] md:text-[14px] py-4 border-[0.1px] border-[#DFE3FA] w-full"
+                  labelClassName="text-[12px] font-bold capitalize text-[#8A91C5]"
                 />
               </div>
             </div>
 
             <div className=" flex flex-col w-full ">
-              <InputField
+              <TextAreaField
                 label="project description"
                 name="projectDescription"
                 error={methods.formState.errors.projectDescription?.message}
                 inputClassName="px-4 py-4 border-[0.1px] text-[10px]  border-[#DFE3FA]"
-                labelClassName="text-[11px] font-bold capitalize text-[#8A91C5] mb-2"
-                type="text"
+                labelClassName="text-[12px] font-bold capitalize text-[#8A91C5] mb-2"
               />
             </div>
           </div>

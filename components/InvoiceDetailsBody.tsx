@@ -17,7 +17,7 @@ const InvoiceDetailsBody = ({ invoice }: Props) => {
           <p className="uppercase text-[14px] md:text-[16px] mb-2 text-[#0C0E16] font-bold">
             {invoice?.code}
           </p>
-          <span className="text-[12px] md:text-[14px] capitalize text-[#888EAF]">
+          <span className="block text-[12px] w-[200px] break-words whitespace-pre-line md:text-[14px] capitalize text-[#888EAF]">
             {invoice?.projectDescription}
           </span>
         </div>

@@ -32,20 +32,20 @@ const ItemDetail = ({
         <div className="flex flex-col gap-5 w-[60%]">
           <label
             htmlFor=""
-            className="text-[11px] font-bold capitalize text-[#8A91C5] "
+            className="text-[12px] font-bold capitalize text-[#8A91C5] "
           >
             item name
           </label>
           <input
             type="text"
             {...register(`itemsList.${index}.itemName`)}
-            className="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
+            className="px-4 py-4 border-[0.1px] text-[13px] border-[#DFE3FA] w-full"
           />
         </div>
         <div className="flex flex-col gap-5 w-[20%]">
           <label
             htmlFor=""
-            className="text-[11px] font-bold capitalize text-[#8A91C5] "
+            className="text-[12px] font-bold capitalize text-[#8A91C5] "
           >
             quantity
           </label>
@@ -53,13 +53,13 @@ const ItemDetail = ({
             {...register(`itemsList.${index}.itemQuantity`)}
             type="number"
             min={0}
-            className="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
+            className="px-4 py-4 border-[0.1px] text-[13px] border-[#DFE3FA] w-full"
           />
         </div>
         <div className="flex flex-col gap-5 w-[20%]">
           <label
             htmlFor=""
-            className="text-[11px] font-bold capitalize text-[#8A91C5] "
+            className="text-[12px] font-bold capitalize text-[#8A91C5] "
           >
             price
           </label>
@@ -67,17 +67,17 @@ const ItemDetail = ({
             {...register(`itemsList.${index}.itemPrice`)}
             min={0}
             type="number"
-            className="px-4 py-4 border-[0.1px] text-[10px] border-[#DFE3FA] w-full"
+            className="px-4 py-4 border-[0.1px] text-[13px] border-[#DFE3FA] w-full"
           />
         </div>
         <div className="flex flex-col gap-8 w-[20%]">
           <label
             htmlFor=""
-            className="text-[11px] font-bold capitalize text-[#8A91C5] "
+            className="text-[12px] font-bold capitalize text-[#8A91C5] "
           >
             total
           </label>
-          <p className="text-[12px]">
+          <p className="text-[13px]">
             {" "}
             {(watchedPrice ?? 0) * (watchedQuantity ?? 0)}
           </p>
