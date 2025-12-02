@@ -15,6 +15,7 @@ import InvoiceHeader from "@/components/InvoiceHeader";
 import InvoiceEmptyState from "@/components/InvoiceEmptyState";
 import InvoiceList from "@/components/InvoiceList";
 import Pagination from "@/components/Pagination";
+import { ClipLoader } from "react-spinners";
 
 const Home = () => {
   const bodyRef = useRef<HTMLDivElement | null>(null);
@@ -30,7 +31,7 @@ const Home = () => {
     isPending: isListOfIvoicesLoading,
     page: currentPage,
     pageCount,
-    totalCount
+    totalCount,
   } = useGetListOfInvoices(currentFilter, page);
 
   const { createInvoice, isPending: isCreating } = useCreateInvoice({
@@ -94,10 +95,6 @@ const Home = () => {
     changeQueries({ [SeachParams.STATUS]: "all", page: "1" });
   }, []);
 
-  if (isListOfIvoicesLoading) {
-    return <Loader />;
-  }
-
   return (
     <div className="bg-[#F8F8FB] w-full min-h-[100vh] flex justify-center ">
       <div className="pt-[7.5rem] relative pb-[4rem] px-4 lg:px-10 lg:py-20 w-full lg:w-[800px] mx-auto flex md:gap-10 flex-col items-start">
@@ -107,6 +104,11 @@ const Home = () => {
           showFilters={showFilters}
           ref={bodyRef}
         />
+        {isListOfIvoicesLoading && (
+          <div className="w-full flex justify-center items-center h-full">
+            <ClipLoader size={80} color={"#7C5DFA"} />
+          </div>
+        )}
         <div className="flex flex-col gap-4 w-full">
           {invoices?.length == 0 ? (
             <InvoiceEmptyState />
