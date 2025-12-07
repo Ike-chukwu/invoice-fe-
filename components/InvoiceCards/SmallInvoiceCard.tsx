@@ -1,7 +1,8 @@
 import { Invoice } from "@/services/invoice/types";
 import React from "react";
 import Link from "next/link";
-import { addDays } from "@/helper";
+import dayjs from "dayjs";
+import { currencies } from "@/constants";
 
 type Prop = {
   invoice: Invoice;
@@ -25,17 +26,11 @@ const SmallInvoiceCard = ({ invoice }: Prop) => {
         <div className="flex w-full justify-between items-center">
           <div className="flex flex-col gap-1 items-start">
             <span className="text-[#7E88C3] text-[13px]  capitalize">
-              due{" "}
-              {new Date(
-                addDays(invoice?.invoiceDate, parseInt(invoice?.paymentTerms))
-              ).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "2-digit",
-              })}
+              due {dayjs(invoice?.dueDate).format("DD MMM YYYY")}{" "}
             </span>
             <span className="text-[#0C0E16] text-[14px] font-bold  capitalize">
-              $
+              {currencies.find((curr) => curr.id === invoice?.currency)
+                ?.symbol || "₦"}
               {invoice?.itemsList?.reduce((acc, item) => {
                 return (item?.itemQuantity ?? 0) * (item?.itemPrice ?? 0) + acc;
               }, 0)}
@@ -58,6 +53,12 @@ const SmallInvoiceCard = ({ invoice }: Prop) => {
             <div className="text-[#373B53] w-[5rem] py-3 text-[12px] bg-[#F5F5F6] flex gap-2 items-center text-bold rounded-md justify-center capitalize">
               <div className="w-2 h-2 rounded-full bg-[#373B53]"></div>
               <span>Draft</span>
+            </div>
+          )}
+          {invoice?.status == "unpaid" && (
+            <div className="text-[#EF4444] w-[5rem] py-3 text-[12px] bg-[#FEF2F2] flex gap-2 items-center text-bold rounded-md justify-center capitalize">
+              <div className="w-2 h-2 rounded-full bg-[#EF4444]"></div>
+              <span>unpaid</span>
             </div>
           )}
         </div>

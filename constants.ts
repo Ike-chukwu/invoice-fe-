@@ -206,6 +206,35 @@ export const paymentMethods = [
   { id: 4, name: "Net 21 days" },
 ];
 
+export const currencies = [
+  { id: "1", code: "USD", name: "US Dollar", symbol: "$" },
+  { id: "2", code: "EUR", name: "Euro", symbol: "€" },
+  { id: "3", code: "GBP", name: "British Pound Sterling", symbol: "£" },
+  { id: "4", code: "JPY", name: "Japanese Yen", symbol: "¥" },
+  { id: "5", code: "CNY", name: "Chinese Yuan Renminbi", symbol: "¥" },
+  { id: "6", code: "CAD", name: "Canadian Dollar", symbol: "$" },
+  { id: "7", code: "AUD", name: "Australian Dollar", symbol: "$" },
+  { id: "8", code: "NZD", name: "New Zealand Dollar", symbol: "$" },
+  { id: "9", code: "CHF", name: "Swiss Franc", symbol: "CHF" },
+  { id: "10", code: "SEK", name: "Swedish Krona", symbol: "kr" },
+  { id: "11", code: "NOK", name: "Norwegian Krone", symbol: "kr" },
+  { id: "12", code: "DKK", name: "Danish Krone", symbol: "kr" },
+  { id: "13", code: "INR", name: "Indian Rupee", symbol: "₹" },
+  { id: "14", code: "SGD", name: "Singapore Dollar", symbol: "$" },
+  { id: "15", code: "HKD", name: "Hong Kong Dollar", symbol: "$" },
+  { id: "16", code: "KRW", name: "South Korean Won", symbol: "₩" },
+  { id: "17", code: "BRL", name: "Brazilian Real", symbol: "R$" },
+  { id: "18", code: "MXN", name: "Mexican Peso", symbol: "$" },
+  { id: "19", code: "RUB", name: "Russian Ruble", symbol: "₽" },
+  { id: "20", code: "ZAR", name: "South African Rand", symbol: "R" },
+  { id: "21", code: "AED", name: "UAE Dirham", symbol: "د.إ" },
+  { id: "22", code: "SAR", name: "Saudi Riyal", symbol: "﷼" },
+  { id: "23", code: "NGN", name: "Nigerian Naira", symbol: "₦" },
+  { id: "24", code: "EGP", name: "Egyptian Pound", symbol: "£" },
+  { id: "25", code: "TRY", name: "Turkish Lira", symbol: "₺" },
+  { id: "26", code: "KES", name: "Kenyan Shilling", symbol: "KSh" },
+];
+
 export const API_URL_V1 = process.env.NEXT_PUBLIC_API_URL;
 
 export const axiosInstance = axios.create({

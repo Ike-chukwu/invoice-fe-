@@ -1,8 +1,9 @@
 import { Invoice } from "@/services/invoice/types";
 import React from "react";
 import Link from "next/link";
-import { addDays } from "@/helper";
 import { ArrowRightIcon } from "../icons";
+import dayjs from "dayjs";
+import { currencies } from "@/constants";
 
 type Prop = {
   invoice: Invoice;
@@ -20,14 +21,7 @@ const LargeInvoiceCard = ({ invoice }: Prop) => {
             {invoice?.code?.slice(1, 7)}
           </span>
           <span className="text-[#7E88C3] text-[13px]  capitalize">
-            due{" "}
-            {new Date(
-              addDays(invoice?.invoiceDate, parseInt(invoice?.paymentTerms))
-            ).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "2-digit",
-            })}
+            due {dayjs(invoice?.dueDate).format("DD MMM YYYY")}
           </span>
           <span className="text-[#7E88C3] text-[13px] capitalize">
             {invoice?.clientName}
@@ -35,7 +29,8 @@ const LargeInvoiceCard = ({ invoice }: Prop) => {
         </div>
         <div className="flex gap-7 items-center">
           <span className="text-[#0C0E16] text-[14px] font-bold  capitalize">
-            $
+            {currencies.find((curr) => curr.id === invoice?.currency)?.symbol ||
+              "₦"}
             {invoice?.itemsList?.reduce(
               (
                 acc: number,
@@ -62,6 +57,12 @@ const LargeInvoiceCard = ({ invoice }: Prop) => {
           {invoice?.status == "paid" && (
             <div className="text-[#33D69F] w-[5rem] py-3 text-[12px] bg-[#F5FDFA] flex gap-2 items-center justify-center text-bold rounded-md capitalize">
               <div className="w-2 h-2 rounded-full bg-[#33D69F]"></div>
+              <span>{invoice?.status}</span>
+            </div>
+          )}
+          {invoice?.status == "unpaid" && (
+            <div className="text-[#EF4444] w-[5rem] py-3 text-[12px] bg-[#FEF2F2] flex gap-2 items-center justify-center text-bold rounded-md capitalize">
+              <div className="w-2 h-2 rounded-full bg-[#EF4444]"></div>
               <span>{invoice?.status}</span>
             </div>
           )}

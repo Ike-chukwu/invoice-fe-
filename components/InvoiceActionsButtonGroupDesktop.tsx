@@ -1,5 +1,8 @@
 import { generatePDF } from "@/app/utils/pdf";
-import { useChangeInvoiceStatus } from "@/hooks/useInvoice";
+import {
+  useChangeInvoiceStatus,
+  useDuplicateInvoice,
+} from "@/hooks/useInvoice";
 import { Invoice } from "@/services/invoice/types";
 import { useNavStore } from "@/stores/nav-store";
 import React from "react";
@@ -27,6 +30,12 @@ const InvoiceActionsButtonGroupDesktop = ({
     onError: () => toast.error("Invoice status update failed"),
     id: id.toString(),
   });
+  const { duplicateInvoice, isPending: isDuplicatingInvoice } =
+    useDuplicateInvoice({
+      onSuccess: () =>
+        toast.success("Invoice has successfully been duplicated"),
+      onError: (err) => toast.error(err),
+    });
 
   const changeStatusHandler = () => {
     changeInvoiceStatus({
@@ -34,6 +43,12 @@ const InvoiceActionsButtonGroupDesktop = ({
       status: "paid",
     });
   };
+  const duplicateInvoiceHandler = () => {
+    console.log(invoice?._id);
+
+    invoice && duplicateInvoice(invoice?._id);
+  };
+
   return (
     <div className="hidden md:flex gap-2 items-center">
       {invoice?.status == "draft" && (
@@ -64,12 +79,26 @@ const InvoiceActionsButtonGroupDesktop = ({
           {isChangingInvoiceStatus ? "Please wait..." : " Mark as Paid"}
         </button>
       )}
-      <button
-        onClick={() => generatePDF("invoice")}
-        className="text-xs p-4 md:px-6 py-4 capitalize hover:opacity-80 rounded-3xl bg-amber-500 text-white font-bold"
-      >
-        Export as PDF
-      </button>
+      {invoice?.status == "paid" && (
+        <button
+          className={
+            "text-xs p-4 md:px-6 py-4 bg-[#33D69F] hover:opacity-80 rounded-3xl font-bold text-white flex items-center gap-2 " +
+            (isDuplicatingInvoice ? "opacity-45" : "opacity-100")
+          }
+          onClick={duplicateInvoiceHandler}
+          disabled={isDuplicatingInvoice}
+        >
+          {isDuplicatingInvoice ? "Duplicating..." : "Duplicate Invoice"}
+        </button>
+      )}
+      {invoice?.status !== "unpaid" && (
+        <button
+          onClick={() => generatePDF("invoice")}
+          className="text-xs p-4 md:px-6 py-4 capitalize hover:opacity-80 rounded-3xl bg-amber-500 text-white font-bold"
+        >
+          Export as PDF
+        </button>
+      )}
     </div>
   );
 };

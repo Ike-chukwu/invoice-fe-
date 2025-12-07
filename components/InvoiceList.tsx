@@ -13,7 +13,7 @@ const InvoiceList = ({ invoices }: Props) => {
       {/* <div className="h-[600px] overflow-y-auto"> */}
       <div className="hidden h-full md:flex flex-col gap-4 w-full">
         {invoices?.map((invoice) => (
-          <LargeInvoiceCard invoice={invoice} />
+          <LargeInvoiceCard key={invoice._id} invoice={invoice} />
         ))}
       </div>
       <div className="flex pt-[2.5rem] md:hidden flex-col gap-4 w-full">

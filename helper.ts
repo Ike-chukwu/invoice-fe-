@@ -16,18 +16,3 @@ export function generateCode() {
 
 
 
-export function addDays(date: string, paymentTerm: number) {
-    const newDate = new Date(date);
-    let adder;
-    if (paymentTerm == 1) {
-        adder = 1
-    } else if (paymentTerm === 2) {
-        adder = 7
-    } else if (paymentTerm === 3) {
-        adder = 14
-    } else if (paymentTerm === 4) {
-        adder = 21
-    }
-    adder && newDate.setDate(newDate.getDate() + adder);
-    return newDate;
-}

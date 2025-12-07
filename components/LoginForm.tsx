@@ -24,7 +24,7 @@ const LoginForm = () => {
   const router = useRouter();
   const { login, isLoading } = useLogin({
     onSuccess: () => toast.success("User successfully logged in"),
-    onError: () => toast.error("Login failed"),
+    onError: (err) => toast.error(err),
   });
   const submitFormHandler = (values: LoginPayload) => {
     login(values);

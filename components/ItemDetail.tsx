@@ -21,7 +21,6 @@ const ItemDetail = ({
   register,
   index,
   watch,
-  listOfItems,
 }: Props) => {
   const watchedQuantity = watch(`itemsList.${index}.itemQuantity`);
   const watchedPrice = watch(`itemsList.${index}.itemPrice`);
@@ -78,7 +77,6 @@ const ItemDetail = ({
             total
           </label>
           <p className="text-[13px]">
-            {" "}
             {(watchedPrice ?? 0) * (watchedQuantity ?? 0)}
           </p>
         </div>

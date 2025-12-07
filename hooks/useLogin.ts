@@ -9,7 +9,7 @@ export const useLogin = ({
   onError,
 }: {
   onSuccess?: () => void;
-  onError?: () => void;
+  onError?: (err: string) => void;
 }) => {
   const { push } = useRouter();
   const { mutate, isPending, isSuccess, isError } = useMutation({
@@ -26,8 +26,11 @@ export const useLogin = ({
         push("/");
       }
     },
-    onError: () => {
-      onError?.();
+    onError: (err) => {
+      const error = err as any;
+      if (("response" in error) as any) {
+        onError?.(error.response?.data?.message);
+      }
       console.log("error occured");
     },
   });

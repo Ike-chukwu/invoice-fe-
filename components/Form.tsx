@@ -5,13 +5,14 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import InputField from "./UI/Input";
 import SelectField from "./UI/Select";
 import ItemDetail from "./ItemDetail";
-import { listOfCountries, paymentMethods } from "@/constants";
+import { currencies, listOfCountries, paymentMethods } from "@/constants";
 import { v4 as uuidv4 } from "uuid";
-import { addDays, generateCode } from "@/helper";
+import { generateCode } from "@/helper";
 import { useNavStore } from "@/stores/nav-store";
-import { useCreateInvoice } from "@/hooks/useInvoice";
+import { useChangeInvoiceStatus, useCreateInvoice } from "@/hooks/useInvoice";
 import { toast } from "sonner";
 import TextAreaField from "./UI/TextArea";
+import dayjs from "dayjs";
 
 type FormProps = {
   invoice?: any;
@@ -31,12 +32,13 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
       countryOfClient: "",
       invoiceDate: "",
       itemsList: [],
-      paymentTerms: "",
+      dueDate: "",
       postCodeOfBusinessOwner: "",
       postCodeOfClient: "",
       projectDescription: "",
       streetAddressOfBusinessOwner: "",
       streetAddressOfClient: "",
+      currency: "",
     },
   });
 
@@ -55,6 +57,15 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
     onSuccess: () => toast.success("Invoice successfully created"),
     onError: () => toast.error("Invoice cannot be created"),
   });
+  const {
+    changeInvoiceStatus,
+    isPending: isChangingInvoiceStatus,
+    isSuccess: isInvoiceStatusChangeSuccess,
+  } = useChangeInvoiceStatus({
+    onSuccess: () => toast.success("Invoice status successfully updated"),
+    onError: () => toast.error("Invoice status update failed"),
+    id: invoice?._id.toString() || "",
+  });
 
   const isNavActive = useNavStore((state) => state.isNavActive);
   const toggleNav = useNavStore((state) => state.toggleNav);
@@ -67,25 +78,13 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
         total: (item.itemPrice ?? 0) * (item.itemQuantity ?? 0),
       };
     });
-    let dueDate;
-    const selectedPaymentTerm = values.paymentTerms;
-    dueDate = addDays(values.invoiceDate, parseInt(selectedPaymentTerm));
-    if (dueDate) {
-      const date = new Date(dueDate);
 
-      const options: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-      };
-      dueDate = date.toLocaleDateString("en-US", options);
-    }
     createInvoice({
       id: uuidv4(),
       code: randomCode,
       ...values,
-      invoiceDate: values.invoiceDate,
-      dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+      invoiceDate: dayjs(values.invoiceDate).toISOString(),
+      dueDate: dayjs(values.dueDate).toISOString(),
       itemsList: formatedItemsList,
       status: "draft",
     });
@@ -97,6 +96,8 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
     if (invoice) {
       methods.reset({
         ...invoice,
+        invoiceDate: dayjs(invoice.invoiceDate).format("YYYY-MM-DD"),
+        dueDate: dayjs(invoice.dueDate).format("YYYY-MM-DD"),
       });
     }
   }, [invoice]);
@@ -106,6 +107,27 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
     if (!invoice) {
       reset();
     }
+    toggleNav();
+  };
+
+  const changeInvoiceStatusFromDraftToPending = (values: invoicePayload) => {
+    const formatedItemsList = values.itemsList?.map((item) => {
+      return {
+        ...item,
+        total: (item.itemPrice ?? 0) * (item.itemQuantity ?? 0),
+      };
+    });
+
+    changeInvoiceStatus({
+      id: invoice?._id.toString() || "",
+      code: invoice?.code,
+      ...values,
+      invoiceDate: dayjs(values.invoiceDate).toISOString(),
+      dueDate: dayjs(values.dueDate).toISOString(),
+      itemsList: formatedItemsList,
+      status: "pending",
+    });
+
     toggleNav();
   };
 
@@ -258,17 +280,27 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                 />
               </div>
               <div className="flex flex-col gap-2 w-[48%]">
-                <SelectField
-                  error={methods.formState.errors.paymentTerms?.message}
-                  label="payment terms"
-                  name="paymentTerms"
-                  options={paymentMethods}
-                  selectClassName="px-4 text-[10px] md:text-[14px] py-4 border-[0.1px] border-[#DFE3FA] w-full"
+                <InputField
+                  label="Due Date"
+                  name="dueDate"
+                  error={methods.formState.errors.dueDate?.message}
+                  inputClassName="px-4 text-[10px] md:text-[14px] py-4 border-[0.1px] border-[#DFE3FA] w-full"
                   labelClassName="text-[12px] font-bold capitalize text-[#8A91C5]"
+                  type="date"
                 />
               </div>
             </div>
 
+            <div className=" flex flex-col w-full ">
+              <SelectField
+                error={methods.formState.errors.currency?.message}
+                options={currencies}
+                name="currency"
+                label="currency"
+                labelClassName="text-[12px] font-bold capitalize text-[#8A91C5]"
+                selectClassName="px-4 text-[10px] md:text-[14px] py-4 border-[0.1px] border-[#DFE3FA] w-full"
+              />
+            </div>
             <div className=" flex flex-col w-full ">
               <TextAreaField
                 label="project description"
@@ -339,6 +371,11 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
               {invoice && (
                 <button
                   type="submit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    methods.reset();
+                    toggleNav();
+                  }}
                   className="text-[11px] p-4 hover:opacity-80 capitalize rounded-3xl bg-[#f9fafe] font-bold text-[#7E88C3]"
                 >
                   cancel
@@ -349,9 +386,24 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
                   type="submit"
                   className="text-[11px] capitalize hover:opacity-80  p-4 rounded-3xl font-bold bg-[#9277FF] text-white"
                 >
-                  save and send
+                  {invoice && invoice.status == "draft"
+                    ? "save draft"
+                    : "save and send"}
                 </button>
               )}
+              {invoice &&
+                invoice.status == "draft" &&
+                itemsListArr?.length !== 0 && (
+                  <button
+                    onClick={methods.handleSubmit(
+                      changeInvoiceStatusFromDraftToPending
+                    )}
+                    type="submit"
+                    className="text-[11px] hover:opacity-80 p-4 capitalize rounded-3xl bg-[#0C0E16] font-bold text-white"
+                  >
+                    save as pending
+                  </button>
+                )}
             </div>
           </div>
         </form>

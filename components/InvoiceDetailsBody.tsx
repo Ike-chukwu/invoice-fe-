@@ -1,5 +1,6 @@
-import { addDays } from "@/helper";
+import { currencies } from "@/constants";
 import { Invoice } from "@/services/invoice/types";
+import dayjs from "dayjs";
 import React from "react";
 
 type Props = {
@@ -43,12 +44,7 @@ const InvoiceDetailsBody = ({ invoice }: Props) => {
               Invoice Date
             </p>
             <p className="text-[14px] md:text-lg font-bold">
-              {invoice?.invoiceDate &&
-                new Date(invoice.invoiceDate).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit",
-                })}
+              {dayjs(invoice?.invoiceDate).format("DD MMM YYYY")}
             </p>
           </div>
           <div className="">
@@ -56,14 +52,7 @@ const InvoiceDetailsBody = ({ invoice }: Props) => {
               Payment Due
             </p>
             <p className="text-[14px] md:text-lg font-bold">
-              {invoice?.invoiceDate &&
-                new Date(
-                  addDays(invoice.invoiceDate, parseInt(invoice.paymentTerms))
-                ).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit",
-                })}
+              {dayjs(invoice?.dueDate).format("DD MMM YYYY")}
             </p>
           </div>
         </div>
@@ -129,11 +118,15 @@ const InvoiceDetailsBody = ({ invoice }: Props) => {
                 <span className="mr-1 text-[#888EAF] md:hidden inline">x</span>
               </p>
               <p className="text-[13px] hidden text-center md:block md:text-[14px] text-black font-bold">
-                ${item.itemPrice}.00
+                {currencies.find((curr) => curr.id === invoice?.currency)
+                  ?.symbol || "₦"}
+                {item.itemPrice}.00
               </p>
 
               <p className="text-[13px] hidden md:block md:text-[14px] text-right font-bold">
-                ${`${(item.itemQuantity ?? 0) * (item.itemPrice ?? 0)}.00`}
+                {currencies.find((curr) => curr.id === invoice?.currency)
+                  ?.symbol || "₦"}
+                {`${(item.itemQuantity ?? 0) * (item.itemPrice ?? 0)}.00`}
               </p>
             </>
           ))}
@@ -153,12 +146,16 @@ const InvoiceDetailsBody = ({ invoice }: Props) => {
                     </span>
                   </span>
                   <span className="text-[13px]  md:text-[14px] text-[#888EAF] md:text-black font-bold">
-                    ${item.itemPrice}.00
+                    {currencies.find((curr) => curr.id === invoice?.currency)
+                      ?.symbol || "₦"}
+                    {item.itemPrice}.00
                   </span>
                 </div>
               </div>
               <p className="text-[13px] block md:hidden md:text-[14px] text-right font-bold">
-                ${`${(item.itemQuantity ?? 0) * (item.itemPrice ?? 0)}.00`}
+                {currencies.find((curr) => curr.id === invoice?.currency)
+                  ?.symbol || "₦"}
+                {`${(item.itemQuantity ?? 0) * (item.itemPrice ?? 0)}.00`}
               </p>
             </div>
           ))}
@@ -166,7 +163,8 @@ const InvoiceDetailsBody = ({ invoice }: Props) => {
         <div className="flex justify-between text-white items-center w-full px-4 py-6 bg-[#373B53] rounded-bl-md rounded-br-md">
           <p className="text-[14px]">Amount Due</p>
           <p className="text-2xl font-bold">
-            $
+            {currencies.find((curr) => curr.id === invoice?.currency)?.symbol ||
+              "₦"}
             {invoice?.itemsList?.reduce((acc, item) => {
               return (item?.itemQuantity ?? 0) * (item?.itemPrice ?? 0) + acc;
             }, 0)}

@@ -27,6 +27,12 @@ const InvoiceStatus = ({ invoice }: Props) => {
           <span>{invoice?.status}</span>
         </div>
       )}
+      {invoice?.status == "unpaid" && (
+        <div className="text-[#EF4444] justify-center w-[5rem] py-2 text-[12px] bg-[#FEF2F2] flex gap-2 items-center text-bold rounded-md capitalize">
+          <div className="w-2 h-2 rounded-full bg-[#EF4444]"></div>
+          <span>{invoice?.status}</span>
+        </div>
+      )}
     </div>
   );
 };

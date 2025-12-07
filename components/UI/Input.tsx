@@ -37,9 +37,9 @@ const InputField = ({
         render={({ field: { onChange, value } }) => (
           <input
             type={type}
-            {...(type === "date" && {
-              min: new Date().toISOString().split("T")[0],
-            })}
+            // {...(type === "date" && {
+            //   min: new Date().toISOString().split("T")[0],
+            // })}
             placeholder={placeholder}
             className={cn(
               inputClassName,

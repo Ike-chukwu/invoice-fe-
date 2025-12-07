@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { RegisterService } from "./../services/register/index";
 import { RegisterPayload } from "./../services/register/schema";
-
 import { useRouter } from "next/navigation";
 
 export const useRegister = ({
@@ -9,7 +8,7 @@ export const useRegister = ({
   onError,
 }: {
   onSuccess?: () => void;
-  onError?: () => void;
+  onError?: (message: string) => void;
 }) => {
   const { push } = useRouter();
   const { mutate, isPending, isSuccess, isError } = useMutation({
@@ -23,8 +22,13 @@ export const useRegister = ({
         push("/login");
       }
     },
-    onError: () => {
-      onError?.();
+    onError: (error) => {
+      if ("response" in (error as any)) {
+        const err = error as any;
+        onError?.(err.response?.data?.message);
+      } else {
+        onError?.("Something went wrong");
+      }
     },
   });
   return {

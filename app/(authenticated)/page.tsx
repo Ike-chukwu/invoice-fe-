@@ -2,7 +2,7 @@
 import { invoicePayload } from "@/types/schema";
 import { v4 as uuidv4 } from "uuid";
 import Form from "@/components/Form";
-import { addDays, generateCode } from "@/helper";
+import { generateCode } from "@/helper";
 import WithAuth from "@/components/ProtectedRoute";
 import { useCreateInvoice, useGetListOfInvoices } from "@/hooks/useInvoice";
 import { toast } from "sonner";
@@ -10,12 +10,12 @@ import { useNavStore } from "../../stores/nav-store";
 import { useEffect, useRef, useState } from "react";
 import { useRouterQuery } from "@/hooks/useRouterQuery";
 import { SeachParams } from "@/constants/index";
-import Loader from "@/components/Loader";
 import InvoiceHeader from "@/components/InvoiceHeader";
 import InvoiceEmptyState from "@/components/InvoiceEmptyState";
 import InvoiceList from "@/components/InvoiceList";
 import Pagination from "@/components/Pagination";
 import { ClipLoader } from "react-spinners";
+import dayjs from "dayjs";
 
 const Home = () => {
   const bodyRef = useRef<HTMLDivElement | null>(null);
@@ -47,27 +47,13 @@ const Home = () => {
         total: (item.itemPrice ?? 0) * (item.itemQuantity ?? 0),
       };
     });
-    let dueDate;
-    const selectedPaymentTerm = values.paymentTerms;
-    dueDate = addDays(values.invoiceDate, parseInt(selectedPaymentTerm));
-
-    if (dueDate) {
-      const date = new Date(dueDate);
-
-      const options: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-      };
-      dueDate = date.toLocaleDateString("en-US", options);
-    }
 
     createInvoice({
       id: uuidv4(),
       code: randomCode,
       ...values,
-      invoiceDate: values.invoiceDate,
-      dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+      invoiceDate: dayjs(values.invoiceDate).toISOString(),
+      dueDate: dayjs(values.dueDate).toISOString(),
       itemsList: formatedItemsList,
       status: "pending",
     });

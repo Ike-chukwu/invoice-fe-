@@ -1,6 +1,6 @@
 import { InvoiceService } from "@/services/invoice";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { send } from "process";
+import { useRouter } from "next/navigation";
 
 export const useCreateInvoice = ({
   onSuccess,
@@ -34,13 +34,48 @@ export const useCreateInvoice = ({
   };
 };
 
+export const useDuplicateInvoice = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void;
+  onError: (err: string) => void;
+}) => {
+  const { push } = useRouter();
+  const queryClient = useQueryClient();
+  const { mutate, isError, isSuccess, isPending } = useMutation({
+    mutationFn: async (variables: string) => {
+      return InvoiceService.duplicateInvoice(variables);
+    },
+    mutationKey: ["duplicateInvoice"],
+    onSuccess: (data) => {
+      onSuccess?.();
+      queryClient.refetchQueries({ queryKey: ["fetchListOfInvoices"] });
+      push("/");
+    },
+    onError: (error) => {
+      const err = error as any;
+      if (("response" in err) as any) {
+        onError?.(err.response.data.message);
+      }
+    },
+  });
+
+  return {
+    duplicateInvoice: mutate,
+    isError,
+    isSuccess,
+    isPending,
+  };
+};
+
 export const useEditInvoice = ({
   onSuccess,
   onError,
   id,
 }: {
   onSuccess: () => void;
-  onError: () => void;
+  onError: (err: string) => void;
   id: string;
 }) => {
   const queryClient = useQueryClient();
@@ -54,8 +89,10 @@ export const useEditInvoice = ({
       queryClient.invalidateQueries({ queryKey: ["getInvoiceById", id] });
     },
     onError: (error) => {
-      console.log(error);
-      onError?.();
+      const err = error as any;
+      if (("response" in err) as any) {
+        onError?.(err.response.data.message);
+      }
     },
   });
 

@@ -16,12 +16,12 @@ export type Invoice = {
   countryOfClient: string;
   dueDate: string;
   invoiceDate: string;
-  paymentTerms: string;
   projectDescription: string;
   itemsList: Item[];
   status: string;
   _id: string;
   userId: string;
+  currency: string;
 };
 
 export type Item = {

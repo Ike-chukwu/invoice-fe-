@@ -21,6 +21,9 @@ export class InvoiceService {
       `${this.INVOICE_BY_ID_URL}/${id}`
     );
   }
+  public static duplicateInvoice(id: string) {
+    return axiosInstance.post<ApiResponse<Invoice>>(`/duplicateInvoice/${id}`);
+  }
 
   public static editInvoice(editedInvoice: any) {
     return axiosInstance.patch(this.INVOICE_URL, editedInvoice);

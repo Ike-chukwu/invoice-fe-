@@ -22,4 +22,8 @@ export const filterTexts = [
     id: 2,
     title: "paid",
   },
+  {
+    id: 3,
+    title: "unpaid",
+  },
 ];

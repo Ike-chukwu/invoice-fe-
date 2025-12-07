@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import Form from "@/components/Form";
-import { addDays } from "@/helper";
 import { invoicePayload } from "@/types/schema";
 import WithAuth from "@/components/ProtectedRoute";
 import { useNavStore } from "@/stores/nav-store";
@@ -20,6 +19,7 @@ import InvoiceDetailsBody from "@/components/InvoiceDetailsBody";
 import InvoiceActionsButtonGroupMobile from "@/components/InvoiceActionsButtonGroupMobile";
 import ModalBackdrop from "@/components/UI/Modal";
 import DeleteInvoiceModal from "@/components/DeleteModal";
+import dayjs from "dayjs";
 
 const ReceiptPage = () => {
   const { id } = useParams();
@@ -31,7 +31,7 @@ const ReceiptPage = () => {
   const toggleNav = useNavStore((state) => state.toggleNav);
   const { editInvoice } = useEditInvoice({
     onSuccess: () => toast.success("Invoice has been edited successfully"),
-    onError: () => toast.error("Invoice could not be edited"),
+    onError: (err) => toast.error(err),
     id: id.toString(),
   });
   const { deleteInvoice, isPending: isDeletePending } = useDeleteInvoice({
@@ -46,33 +46,19 @@ const ReceiptPage = () => {
         total: (item.itemPrice ?? 0) * (item.itemQuantity ?? 0),
       };
     });
-    let dueDate;
-    const selectedPaymentTerm = values.paymentTerms;
-    dueDate = addDays(values.invoiceDate, parseInt(selectedPaymentTerm));
-    if (dueDate) {
-      const date = new Date(dueDate);
-
-      const options: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-      };
-      dueDate = date.toLocaleDateString("en-US", options);
-    }
-
     editInvoice({
       _id: id.toString(),
       code: invoice?.code,
       ...values,
-      invoiceDate: values.invoiceDate,
-      dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+      invoiceDate: dayjs(values.invoiceDate).toISOString(),
+      dueDate: dayjs(values.dueDate).toISOString(),
       itemsList: formatedItemsList,
       status: invoice?.status,
     });
   };
 
-  //ADD ON HOVER EFFECT TO ALL BUTTONS AND ELEMENTS THAT REQUIRE IT
-  //RESTYLE LOGIN AND SIGNUP PAGES
+
+
   if (isInvoiceLoading || isDeletePending) return <Loader />;
 
   return (

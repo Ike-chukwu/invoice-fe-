@@ -1,4 +1,7 @@
-import { useChangeInvoiceStatus } from "@/hooks/useInvoice";
+import {
+  useChangeInvoiceStatus,
+  useDuplicateInvoice,
+} from "@/hooks/useInvoice";
 import { Invoice } from "@/services/invoice/types";
 import { useNavStore } from "@/stores/nav-store";
 import React from "react";
@@ -26,6 +29,17 @@ const InvoiceActionsButtonGroupMobile = ({
     onError: () => toast.error("Invoice status update failed"),
     id: id.toString(),
   });
+
+  const { duplicateInvoice, isPending: isDuplicatingInvoice } =
+    useDuplicateInvoice({
+      onSuccess: () =>
+        toast.success("Invoice has successfully been duplicated"),
+      onError: (err) => toast.error(err),
+    });
+
+  const duplicateInvoiceHandler = () => {
+    invoice && duplicateInvoice(invoice?._id);
+  };
 
   const changeStatusHandler = () => {
     changeInvoiceStatus({
@@ -62,6 +76,15 @@ const InvoiceActionsButtonGroupMobile = ({
             }
           >
             {isChangingInvoiceStatus ? "Please wait..." : " Mark as Paid"}
+          </button>
+        )}
+        {invoice?.status == "paid" && (
+          <button
+            onClick={duplicateInvoiceHandler}
+            disabled={isDuplicatingInvoice}
+            className="text-xs p-4 md:px-6 py-4  capitalize rounded-3xl text-white bg-[#33D69F]"
+          >
+            {isDuplicatingInvoice ? "Duplicating..." : "Duplicate Invoice"}
           </button>
         )}
       </div>

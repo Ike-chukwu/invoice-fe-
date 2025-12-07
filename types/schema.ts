@@ -14,7 +14,8 @@ export const invoiceSchema = yup.object().shape({
   postCodeOfClient: yup.string().required("Post Code is required"),
   countryOfClient: yup.string().required("Country is required"),
   invoiceDate: yup.string().required("Date is required"),
-  paymentTerms: yup.string().required("Payment term is required"),
+  dueDate: yup.string().required("Due Date is required"),
+  currency: yup.string().required("Currency is required"),
   projectDescription: yup.string().required("Project Description is required"),
   itemsList: yup.array().of(
     yup.object().shape({

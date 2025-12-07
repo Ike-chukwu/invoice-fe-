@@ -23,7 +23,7 @@ const RegisterForm = () => {
   });
   const { push } = useRouter();
   const { signup, isLoading } = useRegister({
-    onError: () => toast.error("Registration process failed"),
+    onError: (err) => toast.error(err as string),
     onSuccess: () => {
       toast.success("User successfuly created!");
     },

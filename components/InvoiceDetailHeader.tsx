@@ -1,10 +1,11 @@
 import Link from "next/link";
 import React from "react";
 import { ArrowLeftIcon } from "./icons";
-import { generatePDF } from "@/app/utils/pdf";
+// import { generatePDF } from "@/app/utils/pdf";
 import { Invoice } from "@/services/invoice/types";
 import { useSendInvoiceViaEmail } from "@/hooks/useInvoice";
 import { toast } from "sonner";
+import { generatePDF } from "@/app/utils/pdf";
 
 type Props = {
   invoice?: Invoice;
