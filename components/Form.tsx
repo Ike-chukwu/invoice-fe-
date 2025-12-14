@@ -118,8 +118,18 @@ const Form = ({ invoice, submitFormHandler }: FormProps) => {
       };
     });
 
+    console.log({
+      _id: invoice?._id.toString() || "",
+      code: invoice?.code,
+      ...values,
+      invoiceDate: dayjs(values.invoiceDate).toISOString(),
+      dueDate: dayjs(values.dueDate).toISOString(),
+      itemsList: formatedItemsList,
+      status: "pending",
+    });
+
     changeInvoiceStatus({
-      id: invoice?._id.toString() || "",
+      _id: invoice?._id.toString() || "",
       code: invoice?.code,
       ...values,
       invoiceDate: dayjs(values.invoiceDate).toISOString(),
