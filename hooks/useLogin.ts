@@ -3,6 +3,7 @@ import { LoginService } from "@/services/login";
 import { LoginPayload } from "@/services/login/schema";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 
 export const useLogin = ({
   onSuccess,
@@ -27,11 +28,11 @@ export const useLogin = ({
       }
     },
     onError: (err) => {
-      const error = err as any;
-      if (("response" in error) as any) {
-        onError?.(error.response?.data?.message);
-      }
-      console.log("error occured");
+      const error = err as AxiosError<any>;
+
+      const message = error.response?.data?.message || "Login failed";
+
+      onError?.(message);
     },
   });
   return {
